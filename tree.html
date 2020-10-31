@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+<script lang="ts">
+		let res = { "msg": "success", "code": 0, "data": [{  "investmentId": 469, "touziId": 201, "touziName": "11吃得多测电池", "beitouziId": 202, "beitouziName": "11吃得多测电池21321ex", "isNotKg": "1", "rjAmount": 100.00, "szgf": 97.0, "ycAmount": 100.00, "rzAmount": 100.00, "fillinTime": null, "updateTime": null, "creator": null, "modifier": null, "state": null, "child": null, "father": null, "type": 0 }, {  "investmentId": 470, "touziId": 201, "touziName": "11吃得多测电池", "beitouziId": 203, "beitouziName": "11吃得多测电池21321ex", "isNotKg": "1", "rjAmount": 100.00, "szgf": 1.0, "ycAmount": 100.00, "rzAmount": 1.00, "fillinTime": null, "updateTime": null, "creator": null, "modifier": null, "state": null, "child": null, "father": null, "type": 0 }, {  "investmentId": 500, "touziId": 201, "touziName": "11吃得多测电池", "beitouziId": 208, "beitouziName": "11吃得多测电池11", "isNotKg": "1", "rjAmount": 12.00, "szgf": 50.0, "ycAmount": 55555555.00, "rzAmount": 1.00, "fillinTime": null, "updateTime": null, "creator": null, "modifier": null, "state": null, "child": null, "father": null, "type": 0 }, {  "investmentId": 501, "touziId": 202, "touziName": "11吃得多测电池21321ex", "beitouziId": 204, "beitouziName": "11吃得多测电池21321ex", "isNotKg": "1", "rjAmount": 12.00, "szgf": 27.0, "ycAmount": 12.00, "rzAmount": 1.00, "fillinTime": null, "updateTime": null, "creator": null, "modifier": null, "state": null, "child": null, "father": null, "type": 0 }, {  "investmentId": 524, "touziId": 203, "touziName": "11吃得多测电池21321ex", "beitouziId": 204, "beitouziName": "11吃得多测电池21321ex", "isNotKg": "1", "rjAmount": 1.00, "szgf": 100.0, "ycAmount": 1.00, "rzAmount": null, "fillinTime": null, "updateTime": null, "creator": null, "modifier": null, "state": null, "child": null, "father": null, "type": 0 }, {  "investmentId": 525, "touziId": 208, "touziName": "11吃得多测电池11", "beitouziId": 204, "beitouziName": "11吃得多测电池21321ex", "isNotKg": "1", "rjAmount": 1.00, "szgf": 0.0, "ycAmount": 1.00, "rzAmount": null, "fillinTime": null, "updateTime": null, "creator": null, "modifier": null, "state": null, "child": null, "father": null, "type": 0 }, {  "investmentId": 538, "touziId": 204, "touziName": "11吃得多测电池21321ex", "beitouziId": 205, "beitouziName": "11吃得多测电池", "isNotKg": "1", "rjAmount": 2.00, "szgf": 1.0, "ycAmount": 10.00, "rzAmount": 10.00, "fillinTime": null, "updateTime": null, "creator": null, "modifier": null, "state": null, "child": null, "father": null, "type": 0 }, {  "investmentId": 539, "touziId": 204, "touziName": "11吃得多测电池21321ex", "beitouziId": 206, "beitouziName": "11吃得多测电池11", "isNotKg": "1", "rjAmount": 1.00, "szgf": 1.0, "ycAmount": 0.00, "rzAmount": 1.00, "fillinTime": null, "updateTime": null, "creator": null, "modifier": null, "state": null, "child": null, "father": null, "type": 0 }, {  "investmentId": 365, "touziId": 206, "touziName": "11吃得多测电池11", "beitouziId": 207, "beitouziName": "11吃得多测电池11", "isNotKg": "1", "rjAmount": 1111.00, "szgf": 222.0, "ycAmount": 111112.00, "rzAmount": 1111.00, "fillinTime": null, "updateTime": null, "creator": null, "modifier": null, "state": null, "child": null, "father": null, "type": 0 }, {  "investmentId": 389, "touziId": 205, "touziName": "11吃得多测电池", "beitouziId": 207, "beitouziName": "11吃得多测电池11", "isNotKg": "1", "rjAmount": 23.00, "szgf": 100.0, "ycAmount": 100.00, "rzAmount": 1.00, "fillinTime": null, "updateTime": null, "creator": null, "modifier": null, "state": null, "child": null, "father": null, "type": 0 }] }
+
+		function getTree(data, id) {
+				let str = []
+				let temp;
+				data.forEach(
+					(item, index) => {
+						if (item.touziId === id) {
+							temp = getTree(data, item.beitouziId);
+							if (temp.length > 0) {
+								item.child = temp;
+							}
+							str.push(item)
+						}
+					}
+				)
+				return str
+			}
+
+			const newData = getTree(res.data, 201)
+
+			function handleIsNotKg(currentIsNotKg, parentIsEdit) {
+				console.log(parentIsEdit)
+					if (currentIsNotKg === '0' && parentIsEdit === 1) {
+						// return { isEdit: 2 }
+						return 2
+					} else if (currentIsNotKg === '1' && parentIsEdit === 1) {
+						// return { isEdit: 1 }
+						return 1
+					} else {
+						// return { isEdit: 0 }
+						return 0
+					}
+				}
+
+			function addPropertyOnTree(data, isEdit) {
+				// let isEdits = handleIsNotKg(item.isNotKg, isEdit)
+				// console.log(isEdit)
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					const newData2 = data.map((item) => {
+					// var newData2 = data.map(function(item){
+						const isEdits = this.handleIsNotKg(item.isNotKg, isEdit)
+						item.isEdit = isEdits
+						return {
+							...item,
+							disabled: true,
+							// id: genNonDuplicateID(6),
+							// isEdit: isEdits,
+							child: item.child && item.child.length > 0 ? this.addPropertyOnTree(item.child, item.isEdit) : item.child
+						}
+					})
+					console.log(newData2)
+				}
+
+			// console.log(newData)
+			addPropertyOnTree(newData, 1)
+
+</script>
+</body>
+</html>
